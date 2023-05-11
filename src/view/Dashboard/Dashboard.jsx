@@ -1,4 +1,5 @@
-import React from "react";
+import {React,useState} from "react";
+import { ethers } from "ethers";
 import styled from "styled-components";
 import { Title } from "../viewStyles";
 import StatInfo from "../../components/StatInfo";
@@ -13,6 +14,7 @@ import BackingChart from "./BackingChart";
 import DashboardChart from "../../components/DashboardChart";
 import Holdings from "./Holdings";
 
+
 const periodItems = [
   { label: "7d" },
   { label: "30d" },
@@ -21,8 +23,45 @@ const periodItems = [
   { label: "Max" },
 ];
 const tokenItems = [{ label: "SDAO" }, { label: "gSDAO" }];
+// const clickFun=()=>{
+//   console.log("click hua");
+// }
+
 
 const Dashboard = ({}) => {
+  const [WalletStatus, setWalletStatus] = useState(false);
+  const connectWallet = async () => {
+
+    // const contractAddress = "0x46436dcb1b29b111a00bb61f5475b420ef1104eb";
+    // const contractABI = abi.abi;
+    try {
+      const { ethereum } = window;
+  
+      if (ethereum) {
+        const account = await ethereum.request({
+          method: "eth_requestAccounts",
+          
+        });
+        console.log(account);
+        setWalletStatus(true);
+        window.ethereum.on("chainChanged", () => {
+          window.location.reload();
+        });
+  
+        window.ethereum.on("accountsChanged", () => {
+          window.location.reload(); 
+        });
+        
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        console.log(signer); 
+    }
+  }
+      catch (error) {
+        console.log(error);
+      }
+    }
+  
   return (
     <Container>
       <Content>
@@ -30,9 +69,10 @@ const Dashboard = ({}) => {
           <Title>Dashboard</Title>
           <StakeButtonContainer>
             <GeneralButton
-              bgColor="#32373e"
+              onClick={()=>connectWallet()}
+              bgColor="green"
               labelColor="white"
-              label="0x22....ef"
+              label={WalletStatus === false ? 'Connect Wallet' : 'Connected'}
               icon={<BiWallet size={20} color={"white"} />}
             />
           </StakeButtonContainer>
