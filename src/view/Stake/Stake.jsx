@@ -1,4 +1,5 @@
-import React from "react";
+import {React,useState,useEffect} from "react";
+import {ethers} from 'ethers';
 import styled from "styled-components";
 import { Title } from "../viewStyles";
 import StatInfo from "../../components/StatInfo";
@@ -8,8 +9,63 @@ import { IoSwapVertical } from "react-icons/io5";
 import TokenTable from "../../components/TokenTable";
 import SmallLogo from "../../images/small_logo.svg";
 import OutlineButton from "../../components/OutlineButton";
-
 const Stake = ({}) => {
+  const [inputAddress, setAddress] = useState("");
+  const [inputAmount, setAmount] = useState();
+  const [inputSecond,setinputSecond]=useState();
+  const [useraddress,setuserAddress]=useState("address");
+  useEffect(() => {
+    const fetchAc=async()=>{
+    const provider =new ethers.providers.Web3Provider(window.ethereum);
+    const accounts= await provider.send("eth_requestAccounts",[]);
+    const CurrentAc=accounts[0];
+    console.log("console.log",CurrentAc);
+    setuserAddress(CurrentAc);
+     }
+    fetchAc();
+   
+  },)
+  // useEffect(() => {
+  //   window.ethereum.on('accountsChanged', (accounts) => {
+  //     setuserAddress(accounts[0]);
+  //     window.location.reload();
+  //   });
+  // }, []);
+  const stakeContract="0xf0D6E5520D006F22A5857f14E8533A572b1485dF";
+  const stakeAbi=[{"inputs":[{"internalType":"address","name":"_ohm","type":"address"},{"internalType":"address","name":"_sOHM","type":"address"},{"internalType":"address","name":"_gOHM","type":"address"},{"internalType":"uint256","name":"_epochLength","type":"uint256"},{"internalType":"uint256","name":"_firstEpochNumber","type":"uint256"},{"internalType":"uint256","name":"_firstEpochTime","type":"uint256"},{"internalType":"address","name":"_authority","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"contract IOlympusAuthority","name":"authority","type":"address"}],"name":"AuthorityUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"distributor","type":"address"}],"name":"DistributorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"warmup","type":"uint256"}],"name":"WarmupSet","type":"event"},{"inputs":[],"name":"OHM","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"authority","outputs":[{"internalType":"contract IOlympusAuthority","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"bool","name":"_rebasing","type":"bool"}],"name":"claim","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"distributor","outputs":[{"internalType":"contract IDistributor","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"epoch","outputs":[{"internalType":"uint256","name":"length","type":"uint256"},{"internalType":"uint256","name":"number","type":"uint256"},{"internalType":"uint256","name":"end","type":"uint256"},{"internalType":"uint256","name":"distribute","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"forfeit","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"gOHM","outputs":[{"internalType":"contract IgOHM","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"index","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rebase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"sOHM","outputs":[{"internalType":"contract IsOHM","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"secondsToNextEpoch","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract IOlympusAuthority","name":"_newAuthority","type":"address"}],"name":"setAuthority","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_distributor","type":"address"}],"name":"setDistributor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_warmupPeriod","type":"uint256"}],"name":"setWarmupLength","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"bool","name":"_rebasing","type":"bool"},{"internalType":"bool","name":"_claim","type":"bool"}],"name":"stake","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"supplyInWarmup","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"toggleLock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"bool","name":"_trigger","type":"bool"},{"internalType":"bool","name":"_rebasing","type":"bool"}],"name":"unstake","outputs":[{"internalType":"uint256","name":"amount_","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"unwrap","outputs":[{"internalType":"uint256","name":"sBalance_","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"warmupInfo","outputs":[{"internalType":"uint256","name":"deposit","type":"uint256"},{"internalType":"uint256","name":"gons","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"bool","name":"lock","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"warmupPeriod","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"wrap","outputs":[{"internalType":"uint256","name":"gBalance_","type":"uint256"}],"stateMutability":"nonpayable","type":"function"}];
+  const CallStake = async (OHMAddress,amount,resbasing,claim) =>{
+    const provider =new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts",[]);
+    const signer=provider.getSigner();
+    const contract=new ethers.Contract(stakeContract,stakeAbi,signer);
+    console.log(contract,"contract");
+    try {
+      // Convert amount to wei
+      const amountWei = ethers.utils.parseEther(amount.toString());
+      //for testing fetch OHM Address readonly purpose 
+      const OHMAd= await contract.OHM();
+      console.log("fetched",OHMAd);
+      // Call the function
+      const tx = await contract.stake(OHMAddress, amountWei,resbasing,claim);
+      await tx.wait();
+      // Transaction successful
+      console.log("Transaction successful");
+    } catch (error) {
+      // Handle error
+      console.error("Error sending Ether:", error);
+    }
+  };
+  CallStake("0xebd67712D3650b6898851e00A61Ab5ecc67718C0",10,1,1);
+  const handlechange=(event)=>{
+  if(event.target.name==="first")
+  {
+   setAmount(event.target.value)
+  }
+  else{
+   setinputSecond(event.target.value)
+  }
+}
+
   return (
     <Container>
       <Content>
@@ -52,7 +108,10 @@ const Stake = ({}) => {
               <OutlineButton label="Max" labelColor="white" />
             </MaxButtonContainer>
             <BalanceLine>
-              <BalanceText>00</BalanceText>
+              {/* <input type="text" value={inputAmount} onChange={handlechange}></input> */}
+              <BalanceText >
+              <input type="text" placeholder="0" name="first" value={inputAmount} onChange={handlechange}></input>
+              </BalanceText>
               <BalanceAmount>Balance 8.345 gSDAO</BalanceAmount>
             </BalanceLine>
             <ExchangeButton>
@@ -65,7 +124,9 @@ const Stake = ({}) => {
               <TokenName>SDAO</TokenName>
             </TokenTitle>
             <BalanceLine>
-              <BalanceText>00</BalanceText>
+              <BalanceText>
+              <input type="text" placeholder="0" name="second" value={inputSecond} onChange={handlechange}></input>
+              </BalanceText>
               <BalanceAmount>Balance 8.345 gSDAO</BalanceAmount>
             </BalanceLine>
           </ExchangePanelLeft>
@@ -103,7 +164,6 @@ const Stake = ({}) => {
 };
 
 export default Stake;
-
 const ResultLine = styled.div`
   display: flex;
   align-items: center;

@@ -20,7 +20,7 @@ function App() {
             <Route path="/" element={<LandingView />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/bond" element={<Bond />} />
-            <Route path="/range" element={<Range />} />
+            {/* <Route path="/range" element={<Range />} /> */}
             <Route path="/stake" element={<Stake />} />
           </Routes>
         </Container>

@@ -24,12 +24,12 @@ const menuItems = [
     icon: ActiveBondIcon,
     disableIcon: DisableBondIcon,
   },
-  {
-    label: "Range",
-    path: "/range",
-    icon: ActiveRangeIcon,
-    disableIcon: DisableRangeIcon,
-  },
+  // {
+  //   label: "Range",
+  //   path: "/range",
+  //   icon: ActiveRangeIcon,
+  //   disableIcon: DisableRangeIcon,
+  // },
   {
     label: "Stake",
     path: "/stake",
